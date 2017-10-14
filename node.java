@@ -70,21 +70,20 @@ class List
 		this.tail = null;
 		this.num_items = 0;
 		
-		int i=0;
-		while (i != l.GetSize())
+		Node n = this.head;
+		while (n != num_items)
 		{
-			i++;
-			this.InsertAfter(i);
+			this.InsertAfter(n.getData());
+			n.getLink();
 		}	
 	}
 
 	// navigates to the beginning of the list
 	public void First()
 	{
-		//Node n = head;
 		if (!this.IsEmpty())
 		{	
-			curr = null;
+			curr = head;
 		}
 	}
 
@@ -100,12 +99,9 @@ class List
 	// this should not be possible for invalid positions
 	public void SetPos(int pos)
 	{
-	//Node n = curr;
 		if (!this.IsEmpty() && pos >= 0 && pos < GetSize())
 		{	
-			//curr = pos; cant convert int to node
-			
-			//curr = n.getLink();
+			curr.setData(pos);
 		}
 	}
 
@@ -114,25 +110,18 @@ class List
 	// there should be no wrap-around
 	public void Prev()
 	{
-		if (curr != head)
+		if (!this.IsEmpty())
 		{
-			Node n = head;
-			while (n.getLink() == curr)
+			if (curr != head)
 			{
-				
-				n.setLink(curr);
+				Node n = head;
+				while (n.getLink() != curr)
+				{
+					n.getLink();
+				}
 				curr = n;
 			}
 		}	
-		//if(!this.IsEmpty() && GetPos() > 0)
-		//{	
-		//	Node n = head;
-		//	while (n.getLink() == curr)
-		//	{
-		//		n.setLink(n.getLink().getLink());
-		//		curr = n;
-		//	}
-		//}
 	}
 
 	// navigates to the next element
@@ -140,38 +129,33 @@ class List
 	// there should be no wrap-around
 	public void Next()
 	{
-			Node n = head;
-			if (curr != tail)
+		if (!this.IsEmpty())
+		{
+			if curr (!= tail)
 			{
-				if (n.getLink() == curr)
+				Node n = head;
+				while (n.getLink != curr)
 				{
-					n.setLink(curr);
-					//n.setLink(n.getLink());
+					n.getLink();
 				}
-				//curr = n;
+				curr.setLink(n.getLink());
 			}
+		}
 	}
 	// returns the location of the current element (or -1)
 	public int GetPos()
 	{
-		int i = 0;
-		Node n = head;
-		if (this.curr == null)
+		if (this.IsEmpty())
 			return -1;
 		else 
-			while (curr != n)
-			{
-				i++;
-				n = n.getLink();
-			}
-			return i;
+			return curr.getData();
 	}
 	// returns the value of the current element (or -1)
 	public int GetValue() // little difference
 	{
-		if (this.head == null)
+		if (this.IsEmpty())
 			return -1;
-		else 
+		else
 			return num_items;
 	}
 
@@ -188,29 +172,30 @@ class List
 	public void InsertBefore(int data)
 	{	
 		Node n = new Node();
+		n.setData(data);
+		Node H = head;
 		if (this.IsEmpty())
 		{
 			InsertAfter(data);
+			num_items--;
 		}
-		else if (curr != null)
+		else if (curr == head)
 		{
-			//curr.setData(data);
-			Prev();
-			curr.setLink(curr.getLink().getLink());
-			Next();
-			//curr.setData(data);
-			InsertAfter(data);
-			//curr.setData(data);
+			n.setLink(curr);
+			head = n;
+			curr = n;
 		}
 		else
 		{
-			//curr.setData(data);
-			//curr.setLink(n); 
-			//curr = n; 
-			//tail = n;
-			//curr.setData(data);
+			while (H != curr)
+			{
+				H.getLink();
+			}
+			n.setLink(H.getLink());
+			H.setLink(n);
+			curr = n;
 		}
-		curr.setData(data);
+		num_items++;
 	}
 
 	// inserts an item after the current element
@@ -218,10 +203,10 @@ class List
 	// this should not be possible for a full list
 	public void InsertAfter(int data)
 	{
-		Node n = new Node(); //sets n as a new node
-		if (this.IsEmpty()) // if list is empty
+		Node n = new Node(); 
+		n.setData(data);
+		if (this.IsEmpty()) 
 		{	
-			n.setLink(n);
 			head = n;
 			curr = n;
 			tail = n;
@@ -238,7 +223,6 @@ class List
 			curr.setLink(n); 
 			curr = n; 
 		}
-		curr.setData(data);
 		num_items++;
 	}
 	// removes the current element (collapsing the list)
@@ -248,20 +232,17 @@ class List
 		if (!this.IsEmpty())
 		{
 			Node n = head;
-			if (n.getLink() == curr)
-			{	
-				for (int i = 0; i < n.getData(); i++)
-				{
-					n.setLink(n.getLink());
-				}	
-				//Prev();
-				curr.setLink(curr.getLink().getLink());
-				//Next();
-			}
-			else
+			if (n == curr)
 			{
-				
+				head = null;
+				curr = null;
+				tail = null;
 			}
+			else if (n != curr)
+			{ 
+				n.getLink();
+			}
+			curr.setLink(curr.getLink().getLink());
 			num_items--;
 		}			
 	}
@@ -274,6 +255,9 @@ class List
 			}
 			else
 			{
+				while (curr != tail)
+					curr.getData();
+					curr.getLink();
 				for (int i=curr; i<end; i++)
 					list[i] = list[i+1];
 			}
@@ -286,17 +270,14 @@ class List
 	{
 		if (!this.IsEmpty())
 		{
-			//curr.getData();
-			//curr.setData(data);
-			
-			
+			this.curr.setData(data);
 		}	
 	}
 	
 	// returns if the list is empty
 	public boolean IsEmpty()
 	{
-		return this.head == null;
+		return (this.GetSize() == 0);
 	}
 	
 	// returns if the list is full
@@ -304,11 +285,11 @@ class List
 	{
 		return (MAX_SIZE == this.GetSize());
 	}
-
+/*
 // returns if two lists are equal (by value)
-//	public boolean Equals(List l)
-//	{
-//	}
+	public boolean Equals(List l)
+	{
+	}
 
 	// returns the concatenation of two lists
 	// l should not be modified
@@ -325,7 +306,7 @@ class List
 		return newList;
 		
 	}
-
+*/
 	// returns a string representation of the entire list (e.g., 1 2 3 4 5)
 	// the string "NULL" should be returned for an empty list
 	public String toString()
