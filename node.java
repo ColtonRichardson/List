@@ -70,11 +70,11 @@ class List
 		this.tail = null;
 		this.num_items = 0;
 		
-		Node n = this.head;
-		while (n != num_items)
+		int i =0;
+		while (i != l.GetSize())
 		{
-			this.InsertAfter(n.getData());
-			n.getLink();
+			i++;
+			this.InsertAfter(i);
 		}	
 	}
 
@@ -117,9 +117,9 @@ class List
 				Node n = head;
 				while (n.getLink() != curr)
 				{
-					n.getLink();
+					n = n.getLink();
+					curr = n;
 				}
-				curr = n;
 			}
 		}	
 	}
@@ -136,7 +136,7 @@ class List
 				Node n = head;
 				while (n.getLink != curr)
 				{
-					n.getLink();
+					n = n.getLink();
 				}
 				curr.setLink(n.getLink());
 			}
@@ -145,10 +145,21 @@ class List
 	// returns the location of the current element (or -1)
 	public int GetPos()
 	{
+		int i = 0;
+		Node n = head;
 		if (this.IsEmpty())
+		{	
 			return -1;
+		}	
 		else 
-			return curr.getData();
+		{	
+			while (n != curr)
+			{ 
+				i++;
+				n = n.getLink();
+			}
+			return i;
+		}
 	}
 	// returns the value of the current element (or -1)
 	public int GetValue() // little difference
@@ -231,7 +242,7 @@ class List
 	{
 		if (!this.IsEmpty())
 		{
-			Node n = head;
+			Node n = this.head;
 			if (n == curr)
 			{
 				head = null;
@@ -240,9 +251,10 @@ class List
 			}
 			else if (n != curr)
 			{ 
-				n.getLink();
+				n = n.getLink();
+				curr = n;
+				curr.setLink(curr.getLink().getLink());
 			}
-			curr.setLink(curr.getLink().getLink());
 			num_items--;
 		}			
 	}
